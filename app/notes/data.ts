@@ -1,3 +1,5 @@
+import { connection } from "next/server";
+
 export type Note = {
   id: string;
   title: string;
@@ -36,3 +38,18 @@ export const notes: Note[] = [
       "A final summary for the week: prune the unnecessary, build the simple path, and keep the product easy to explain to a teammate.",
   },
 ];
+
+export async function getNotes(): Promise<Note[]> {
+  await connection();
+  await sleep(800);
+
+  if (Math.random() < 0.25) {
+    throw new Error("The notes could not be loaded. Please try again.");
+  }
+
+  return notes;
+}
+
+function sleep(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
